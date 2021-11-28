@@ -13,7 +13,13 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<any> {
-    return await this.userModel.findAndCountAll({});
+    try {
+      const users = await this.userModel.findAndCountAll({});
+      console.log(users);
+      return users;
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   async create(body: CreateUserDto) {

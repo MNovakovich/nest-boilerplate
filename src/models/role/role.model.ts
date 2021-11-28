@@ -22,7 +22,7 @@ export class Role extends Model {
 
   @Column({
     type: DataType.STRING(562),
-    allowNull: false,
+    allowNull: true,
   })
   description: string;
 }
