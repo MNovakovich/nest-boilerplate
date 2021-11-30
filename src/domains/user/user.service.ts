@@ -1,22 +1,31 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { QueryTypes } from 'sequelize';
+import { Sequelize } from 'sequelize';
+import { Role } from '../role/role.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 //import { Sequelize } from 'sequelize-typescript';
 import { User } from './user.model';
+import { PaginateDecorator, IPaginationResponse } from 'src/common/pagination';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User)
     private userModel: typeof User,
+    @InjectModel(Role)
+    private roleModel: typeof Role,
   ) {}
 
-  async findAll(): Promise<any> {
+  async findAll(query): Promise<IPaginationResponse<User>> {
     try {
-      const users = await this.userModel.findAndCountAll({});
-      console.log(users);
-      return users;
+      const userNew = await new PaginateDecorator<User>({
+        model: this.userModel,
+        options: { limit: Number(query.limit) },
+        query: { order: [['email', 'ASC']] },
+      });
+      return userNew.getResult(query.page);
     } catch (error) {
       console.log(error.message);
     }

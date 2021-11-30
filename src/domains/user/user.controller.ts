@@ -8,6 +8,8 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
+  Req,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,8 +24,10 @@ export class UserController {
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 2000, type: [User] })
   @Get('/')
-  getAll() {
-    return this.userService.findAll();
+  getAll(@Query() query: any) {
+    // const query = { page: 1 };
+    console.log(query);
+    return this.userService.findAll(query);
   }
 
   @ApiOperation({ summary: 'Create new user' })
