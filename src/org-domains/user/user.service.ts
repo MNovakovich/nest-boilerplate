@@ -1,7 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { QueryTypes } from 'sequelize';
-import { Sequelize } from 'sequelize';
 import { Role } from '../role/role.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -61,3 +59,10 @@ export class UserService {
     return user;
   }
 }
+
+`
+
+npx stg -D mysql -h localhost -p 3306 -d node_bp -u root -x root --indices --dialect-options-file path/to/dialectOptions.json --case camel --out-dir models --clean 
+
+
+`;
