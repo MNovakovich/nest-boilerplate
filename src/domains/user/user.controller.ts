@@ -10,8 +10,10 @@ import {
   Post,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.model';
@@ -21,6 +23,8 @@ import { UserService } from './user.service';
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
+
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 2000, type: [User] })
   @Get('/')
@@ -28,6 +32,16 @@ export class UserController {
     // const query = { page: 1 };
     console.log(query);
     return this.userService.findAll(query);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get userBy Id' })
+  @ApiResponse({ status: 2000, type: User })
+  @Get('/:id')
+  getById(@Param('id') id: string) {
+    // const query = { page: 1 };
+
+    return this.userService.getById(+id);
   }
 
   @ApiOperation({ summary: 'Create new user' })

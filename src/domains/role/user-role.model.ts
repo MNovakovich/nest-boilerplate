@@ -16,6 +16,7 @@ interface UserRoleAttributes {
 }
 @Table({
   tableName: 'user_roles',
+  modelName: 'user_role',
   underscored: false,
   createdAt: false,
   updatedAt: false,

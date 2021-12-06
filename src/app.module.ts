@@ -8,6 +8,7 @@ import { Role } from './domains/role/role.model';
 import { UserRoles } from './domains/role/user-role.model';
 import { ConfigModule } from '@nestjs/config';
 import { RoleModule } from './domains/role/role.module';
+import { AuthModule } from './domains/auth/auth.module';
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -31,6 +32,7 @@ dotenv.config();
     }),
     UserModule,
     RoleModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

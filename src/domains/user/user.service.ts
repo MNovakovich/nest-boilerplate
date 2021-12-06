@@ -30,6 +30,17 @@ export class UserService {
       console.log(error.message);
     }
   }
+  async getById(id: number): Promise<User> {
+    try {
+      const user = await this.userModel.findOne({
+        where: { id },
+        include: { all: true },
+      });
+      return user;
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   // async create(body: CreateUserDto) {
   //   const user = await this.getUserByEmail(body.email);
@@ -57,7 +68,10 @@ export class UserService {
   }
 
   async getUserByEmail(email: string) {
-    const user = await this.userModel.findOne({ where: { email } });
+    const user = await this.userModel.findOne({
+      where: { email },
+      include: { all: true },
+    });
     return user;
   }
 
