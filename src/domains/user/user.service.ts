@@ -18,14 +18,15 @@ export class UserService {
     private roleService: RoleService,
   ) {}
 
-  async findAll(query): Promise<IPaginationResponse<User>> {
+  async findAll(query): Promise<User[]> {
     try {
-      const userNew = await new PaginateDecorator<User>({
-        model: this.userModel,
-        options: { limit: Number(query.limit) },
-        query: { order: [['email', 'ASC']] },
-      });
-      return userNew.getResult(query.page);
+      // const userNew = await new PaginateDecorator<User>({
+      //   model: this.userModel,
+      //   options: { limit: Number(query.limit) },
+      //   query: { order: [['email', 'ASC']] },
+      // });
+      // return userNew.getResult(query.page);
+      return await this.userModel.findAll({});
     } catch (error) {
       console.log(error.message);
     }
