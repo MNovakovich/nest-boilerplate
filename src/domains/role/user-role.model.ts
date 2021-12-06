@@ -16,8 +16,9 @@ interface UserRoleAttributes {
 }
 @Table({
   tableName: 'user_roles',
-  underscored: true,
+  underscored: false,
   createdAt: false,
+  updatedAt: false,
 })
 export class UserRoles extends Model<UserRoles, UserRoleAttributes> {
   @ApiProperty({ example: '1', description: 'Role Id unique' })

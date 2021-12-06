@@ -8,14 +8,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 //import { Sequelize } from 'sequelize-typescript';
 import { User } from './user.model';
 import { PaginateDecorator, IPaginationResponse } from 'src/common/pagination';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User)
     private userModel: typeof User,
-    @InjectModel(Role)
-    private roleModel: typeof Role,
+    private roleService: RoleService,
   ) {}
 
   async findAll(query): Promise<IPaginationResponse<User>> {
@@ -31,12 +31,34 @@ export class UserService {
     }
   }
 
-  async create(body: CreateUserDto) {
-    const user = await this.getUserByEmail(body.email);
-    if (user) {
-      throw new HttpException('User is alredy exists', HttpStatus.BAD_REQUEST);
+  // async create(body: CreateUserDto) {
+  //   const user = await this.getUserByEmail(body.email);
+  //   if (user) {
+  //     throw new HttpException('User is alredy exists', HttpStatus.BAD_REQUEST);
+  //   }
+  //   return await this.userModel.create(body);
+  // }
+  async create(dto: CreateUserDto) {
+    try {
+      const user = await this.userModel.create(dto);
+      const role = await this.roleService.getRoleByName('user');
+      await user.$set('roles', [role.id]);
+      return user;
+    } catch (error) {
+      console.log(error.message);
     }
-    return await this.userModel.create(body);
+  }
+
+  async update(id: number, data: UpdateUserDto) {
+    const user = await this.userModel.findOne({ where: { id: id } });
+    if (!user)
+      return new HttpException('user not exist!', HttpStatus.BAD_REQUEST);
+    return await user.update(data);
+  }
+
+  async getUserByEmail(email: string) {
+    const user = await this.userModel.findOne({ where: { email } });
+    return user;
   }
 
   async delete(id: number) {
@@ -48,16 +70,5 @@ export class UserService {
       );
     }
     return await this.userModel.destroy({ where: { id } });
-  }
-  async update(id: number, data: UpdateUserDto) {
-    const user = await this.userModel.findOne({ where: { id: id } });
-    if (!user)
-      return new HttpException('user not exist!', HttpStatus.BAD_REQUEST);
-    return await user.update(data);
-  }
-
-  async getUserByEmail(email: string) {
-    const user = await this.userModel.findOne({ where: { email } });
-    return user;
   }
 }

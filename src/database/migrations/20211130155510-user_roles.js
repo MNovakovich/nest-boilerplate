@@ -18,10 +18,12 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         field: 'user_id',
+        references: { model: 'users', key: 'id' }
       },
       roleId: {
         type: Sequelize.INTEGER,
-        field: 'user_id',
+        field: 'role_id',
+        references: { model: 'roles', key: 'id' }
       },
 
 

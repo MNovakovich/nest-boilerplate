@@ -9,4 +9,7 @@ export class RoleService {
   async getAll() {
     return await this.roleModel.findAll({});
   }
+  async getRoleByName(name: string) {
+    return await this.roleModel.findOne({ where: { name } });
+  }
 }
