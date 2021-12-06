@@ -86,4 +86,11 @@ export class UserService {
     }
     return await this.userModel.destroy({ where: { id } });
   }
+
+  async changeRole(data) {
+    console.log(data);
+    const user = await this.userModel.findOne({ where: { id: data.userId } });
+    await user.$set('roles', data.roleId);
+    return user;
+  }
 }

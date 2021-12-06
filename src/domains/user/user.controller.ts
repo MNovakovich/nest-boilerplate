@@ -14,6 +14,8 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles } from '../auth/roles-auth.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.model';
@@ -24,7 +26,8 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 2000, type: [User] })
   @Get('/')
@@ -60,5 +63,10 @@ export class UserController {
   @Delete('/:id')
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.userService.delete(id);
+  }
+
+  @Get('/change-role/user/:userId/role/:roleId')
+  changeUserRole(@Param() params: { roleId: string; userId: string }) {
+    return this.userService.changeRole(params);
   }
 }

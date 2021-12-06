@@ -29,9 +29,13 @@ export class Role extends Model<Role, RoleAttributes> {
   id: number;
   @ApiProperty({ example: 'admin', description: 'title of role' })
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(128),
     allowNull: false,
     unique: true,
+    set(value: string) {
+      const name = value.toLocaleUpperCase();
+      this.setAttributes('name', name);
+    },
   })
   name: string;
 
