@@ -10,8 +10,12 @@ import {
   Post,
   Query,
   Req,
+  Res,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles-auth.decorator';
@@ -20,7 +24,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.model';
 import { UserService } from './user.service';
-
+import { mutlerStorageSettings } from 'src/config/mutler-file-storage';
+import { identity } from 'rxjs';
+import { join } from 'path';
 @ApiTags('users')
 @Controller('users')
 export class UserController {
@@ -36,6 +42,27 @@ export class UserController {
     console.log(query);
     return this.userService.findAll(query);
   }
+  @Post('/:id/upload')
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      storage: mutlerStorageSettings(),
+    }),
+  )
+  uploadFile(@Param('id') id, @UploadedFile() file, @Res() res) {
+    console.log(`${file.path}`);
+
+    return res.sendFile(join(process.cwd(), file.path));
+  }
+
+  @Get('/get-image')
+  getImage(@Res() res) {
+    return res.sendFile(
+      join(
+        process.cwd(),
+        'static/images/avatars/359a34fbf952a534fd87151e9eec5c2b.jpg',
+      ),
+    );
+  }
 
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get userBy Id' })
@@ -43,7 +70,6 @@ export class UserController {
   @Get('/:id')
   getById(@Param('id') id: string) {
     // const query = { page: 1 };
-
     return this.userService.getById(+id);
   }
 

@@ -11,6 +11,7 @@ import { UserRoles } from '../role/user-role.model';
 interface UserCreationAttrs {
   email: string;
   password: string;
+  avatar?: string;
 }
 @Table({
   tableName: 'users',
@@ -41,6 +42,13 @@ export class User extends Model<User, UserCreationAttrs> {
     allowNull: false,
   })
   password: string;
+
+  @ApiProperty({ example: '', description: 'upload avatar' })
+  @Column({
+    type: DataType.STRING(562),
+    allowNull: true,
+  })
+  avatar: string;
 
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[];

@@ -9,7 +9,8 @@ import { UserRoles } from './domains/role/user-role.model';
 import { ConfigModule } from '@nestjs/config';
 import { RoleModule } from './domains/role/role.module';
 import { AuthModule } from './domains/auth/auth.module';
-
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -29,6 +30,9 @@ dotenv.config();
       models: [User, Role, UserRoles],
       // sync: { force: true },
       // autoLoadModels: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static'),
     }),
     UserModule,
     RoleModule,

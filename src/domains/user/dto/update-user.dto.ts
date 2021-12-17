@@ -10,5 +10,9 @@ export class UpdateUserDto {
   password!: string;
 
   @IsOptional()
+  @IsNotEmpty()
+  avatar?: string;
+
+  @IsOptional()
   deletedAt?: string | null;
 }
