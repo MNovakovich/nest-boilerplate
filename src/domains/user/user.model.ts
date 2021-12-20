@@ -8,6 +8,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../role/role.model';
 import { UserRoles } from '../role/user-role.model';
+import { UPLOAD_AVATAR_FOLDER } from './user.constants';
 interface UserCreationAttrs {
   email: string;
   password: string;
@@ -47,6 +48,13 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({
     type: DataType.STRING(562),
     allowNull: true,
+    get() {
+      const relativePath = this.getDataValue('avatar');
+      return `/api/v1${relativePath}`;
+    },
+    set(file) {
+      this.setDataValue('avatar', `${UPLOAD_AVATAR_FOLDER}/${file}`);
+    },
   })
   avatar: string;
 

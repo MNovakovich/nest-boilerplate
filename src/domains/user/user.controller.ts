@@ -4,6 +4,8 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -25,12 +27,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.model';
 import { UserService } from './user.service';
 import { mutlerStorageSettings } from 'src/config/mutler-file-storage';
-import { identity } from 'rxjs';
-import { join } from 'path';
+import { ImageService } from 'src/services/images/image.service';
+import { UPLOAD_AVATAR_FOLDER } from './user.constants';
 @ApiTags('users')
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, imageService: ImageService) {}
 
   @Roles('admin')
   @UseGuards(RolesGuard)
@@ -45,23 +47,22 @@ export class UserController {
   @Post('/:id/upload')
   @UseInterceptors(
     FileInterceptor('avatar', {
-      storage: mutlerStorageSettings(),
+      storage: mutlerStorageSettings(UPLOAD_AVATAR_FOLDER),
     }),
   )
-  uploadFile(@Param('id') id, @UploadedFile() file, @Res() res) {
-    console.log(`${file.path}`);
+  async uploadFile(@Param('id') id, @UploadedFile() file, @Res() res) {
+    console.log(file);
+    if (!file)
+      throw new HttpException(
+        'The image is not uploaded',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
 
-    return res.sendFile(join(process.cwd(), file.path));
-  }
+    const user = await this.userService.update(id, {
+      avatar: file.filename,
+    });
 
-  @Get('/get-image')
-  getImage(@Res() res) {
-    return res.sendFile(
-      join(
-        process.cwd(),
-        'static/images/avatars/359a34fbf952a534fd87151e9eec5c2b.jpg',
-      ),
-    );
+    return res.status(200).json(user);
   }
 
   @UseGuards(JwtAuthGuard)

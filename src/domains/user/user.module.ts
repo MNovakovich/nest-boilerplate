@@ -6,6 +6,7 @@ import { User } from './user.model';
 import { Role } from '../role/role.model';
 import { RoleService } from '../role/role.service';
 import { AuthModule } from '../auth/auth.module';
+import { ImageService } from 'src/services/images/image.service';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { AuthModule } from '../auth/auth.module';
     forwardRef(() => AuthModule),
   ],
   controllers: [UserController],
-  providers: [UserService, RoleService],
+  providers: [UserService, RoleService, ImageService],
   exports: [UserService],
 })
 export class UserModule {}

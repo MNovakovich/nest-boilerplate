@@ -9,6 +9,7 @@ import { UserRoles } from './domains/role/user-role.model';
 import { ConfigModule } from '@nestjs/config';
 import { RoleModule } from './domains/role/role.module';
 import { AuthModule } from './domains/auth/auth.module';
+import { ImageModule } from './services/images/image.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import * as dotenv from 'dotenv';
@@ -37,6 +38,7 @@ dotenv.config();
     UserModule,
     RoleModule,
     AuthModule,
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

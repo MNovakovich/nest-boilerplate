@@ -65,7 +65,9 @@ export class UserService {
     const user = await this.userModel.findOne({ where: { id: id } });
     if (!user)
       return new HttpException('user not exist!', HttpStatus.BAD_REQUEST);
-    return await user.update(data);
+    await user.update(data);
+    await user.save();
+    return user;
   }
 
   async getUserByEmail(email: string) {
@@ -88,9 +90,13 @@ export class UserService {
   }
 
   async changeRole(data) {
-    console.log(data);
     const user = await this.userModel.findOne({ where: { id: data.userId } });
     await user.$set('roles', data.roleId);
     return user;
+  }
+  async getImagePath() {
+    console.log(this.userModel);
+    const path = `/images/`;
+    return path;
   }
 }

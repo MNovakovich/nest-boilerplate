@@ -1,9 +1,9 @@
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
-export function mutlerStorageSettings(dest = './avatars') {
+export function mutlerStorageSettings(dest = '') {
   return diskStorage({
-    destination: './static/images/avatars',
+    destination: `./static${dest}`,
     filename: (req, file, cb) => {
       const randomName = Array(32)
         .fill(null)
