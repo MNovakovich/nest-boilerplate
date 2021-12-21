@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UserModule } from './domains/user/user.module';
 import { User } from './domains/user/user.model';
@@ -40,7 +38,7 @@ dotenv.config();
     AuthModule,
     ImageModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
