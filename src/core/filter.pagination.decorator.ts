@@ -108,7 +108,7 @@ export class PaginateFilterUrl {
     let filters = this.filterQuery(query);
 
     let dbModel;
-    console.log(this.getAttributes(query.fields), 'attributes');
+
     let where = { ...filters };
     let includes = this.includes(query.include)
       ? this.includes(query.include)
@@ -116,6 +116,8 @@ export class PaginateFilterUrl {
     if (options.include) {
       includes = [...includes, options.include];
     }
+
+    console.log(this.getAttributes(query.fields), 'attttt');
     dbModel = await Model.findAndCountAll({
       offset,
       limit,
@@ -162,7 +164,7 @@ export class PaginateFilterUrl {
   };
 
   getAttributes(attributes) {
-    if (!attributes) return [];
+    if (!attributes) return null;
     if (attributes.includes(',')) {
       let splitedAttr = attributes.split(',');
       return splitedAttr;
