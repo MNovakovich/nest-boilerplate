@@ -16,6 +16,7 @@ interface UserCreationAttrs {
 }
 @Table({
   tableName: 'users',
+
   underscored: true,
   paranoid: true,
   deletedAt: 'deletedAt',

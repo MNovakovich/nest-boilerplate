@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { QueryTypes } from 'sequelize';
 import { Sequelize } from 'sequelize';
@@ -9,24 +9,25 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.model';
 import { PaginateDecorator, IPaginationResponse } from 'src/common/pagination';
 import { RoleService } from '../role/role.service';
-
+import { paginateFilterUrl } from 'src/core/filter.pagination.decorator';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User)
-    private userModel: typeof User,
-    private roleService: RoleService,
+    @Inject('USER_REPOSITORY')
+    private readonly userModel: typeof User,
+    private roleService: RoleService, // private roleService: RoleService,
   ) {}
 
   async findAll(query): Promise<User[]> {
     try {
+      const res = await paginateFilterUrl.query(this.userModel, query, {});
       // const userNew = await new PaginateDecorator<User>({
       //   model: this.userModel,
       //   options: { limit: Number(query.limit) },
       //   query: { order: [['email', 'ASC']] },
       // });
       // return userNew.getResult(query.page);
-      return await this.userModel.findAll({});
+      return res;
     } catch (error) {
       console.log(error.message);
     }
@@ -43,18 +44,11 @@ export class UserService {
     }
   }
 
-  // async create(body: CreateUserDto) {
-  //   const user = await this.getUserByEmail(body.email);
-  //   if (user) {
-  //     throw new HttpException('User is alredy exists', HttpStatus.BAD_REQUEST);
-  //   }
-  //   return await this.userModel.create(body);
-  // }
   async create(dto: CreateUserDto) {
     try {
       const user = await this.userModel.create(dto);
-      const role = await this.roleService.getRoleByName('user');
-      await user.$set('roles', [role.id]);
+      // const role = await this.roleService.getRoleByName('user');
+      // await user.$set('roles', [role.id]);
       return user;
     } catch (error) {
       console.log(error.message);
