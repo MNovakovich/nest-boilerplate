@@ -31,10 +31,11 @@ export class PaginateFilterUrl {
   /**
    *
    * @param {*} Model // Sequelize Model  User , Post ect.
-   * @param query.status : {
-   *    options:  all | active | deactive ,
-   *    default: active,
-   *    desc: "check if exist col active and filter it"
+   * @param query.fields : {
+   *    options: string ,
+   *    default: null,
+   *    desc: "return particular fields of model. If you want to select multi fields, just separate them with comma ',' "
+   *    example: 'firstName, lastName, id' ect'
    * }
    * @param query.page {
    *    optional
@@ -63,6 +64,14 @@ export class PaginateFilterUrl {
    *                     ?where.Name=John&where.role_id=1
    *   }
    *
+   * * *@param query.include.[ModelName] {
+   *     optional,
+   *     description:  Include specific model
+   *
+   *    example:
+   *      include=User&include=Role;fields:name,id
+   *   }
+   *
    * @param options {
    *   optional,
    *   type: object
@@ -77,6 +86,7 @@ export class PaginateFilterUrl {
    */
 
   async query(Model, query, options: IOrderOptions) {
+    //console.log(options, 'optionssss');
     //console.log(query, 'query');
 
     //console.log(this.models, 'models');
@@ -110,13 +120,17 @@ export class PaginateFilterUrl {
     let dbModel;
 
     let where = { ...filters };
-    let includes = this.includes(query.include)
-      ? this.includes(query.include)
-      : null;
-    if (options.include) {
-      includes = [...includes, options.include];
-    }
 
+    let includes: any = this.includes(query.include)
+      ? this.includes(query.include)
+      : [];
+
+    // let inc = [...includes];
+    if (options.include) {
+      includes = [...includes, ...options.include];
+    }
+    // console.log(inc, 'iiiiii');
+    console.log(includes, 'includess 1');
     console.log(this.getAttributes(query.fields), 'attttt');
     dbModel = await Model.findAndCountAll({
       offset,
@@ -176,11 +190,13 @@ export class PaginateFilterUrl {
   includes = (includes) => {
     const data = [];
     if (typeof includes === 'string') {
+      console.log([this.splitIncludes(includes)], 'aaaaaaa');
       const data = includes.includes(';')
-        ? this.splitIncludes(includes)
+        ? [this.splitIncludes(includes)]
         : this.isModelExists(includes) && [
             { model: this.getModelByName(includes) },
           ];
+      console.log(data, 'dddddsd');
       return data;
     } else if (includes !== null && typeof includes === 'object') {
       const data = [];
@@ -208,7 +224,7 @@ export class PaginateFilterUrl {
 
     const [model, ...otherProps] = properties;
 
-    console.log(properties, 'includeeeee');
+    //console.log(properties, 'includeeeee');
     if (!this.isModelExists(model)) return null;
     let data: any | null = null;
 

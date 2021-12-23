@@ -20,6 +20,16 @@ export class RoleService {
   }
 
   async getAllRoles(query) {
-    return await paginateFilterUrl.query(this.userRoleRepository, query, {});
+    const options: any = {};
+    options.include = [
+      {
+        model: Role,
+      },
+    ];
+    return await paginateFilterUrl.query(
+      this.userRoleRepository,
+      query,
+      options,
+    );
   }
 }
