@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Role } from './role.model';
 import { UserRoles } from './user-role.model';
@@ -20,16 +20,20 @@ export class RoleService {
   }
 
   async getAllRoles(query) {
-    const options: any = {};
-    options.include = [
-      {
-        model: Role,
-      },
-    ];
-    return await paginateFilterUrl.query(
-      this.userRoleRepository,
-      query,
-      options,
-    );
+    try {
+      const options: any = {};
+      options.include = [
+        {
+          model: Role,
+        },
+      ];
+      return await paginateFilterUrl.query(
+        this.userRoleRepository,
+        query,
+        options,
+      );
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 }
