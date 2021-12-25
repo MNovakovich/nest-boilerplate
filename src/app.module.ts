@@ -14,14 +14,16 @@ dotenv.config();
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static'),
+      exclude: ['/api*'],
+    }),
     DatabaseModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'static'),
-    }),
+
     UserModule,
     RoleModule,
     AuthModule,
