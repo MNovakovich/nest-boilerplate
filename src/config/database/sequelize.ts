@@ -5,7 +5,7 @@ const sequelizeConnection = new Sequelize({
   host: 'localhost',
   port: 3306,
   username: 'root',
-  password: 'root',
+  password: '',
   database: 'nest_db',
 });
 

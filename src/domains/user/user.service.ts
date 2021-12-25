@@ -1,10 +1,17 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.model';
 
 import { RoleService } from '../role/role.service';
 import { paginateFilterUrl } from 'src/core/filter.pagination.decorator';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -14,12 +21,13 @@ export class UserService {
   ) {}
 
   async findAll(query): Promise<User[]> {
-    try {
-      const res = await paginateFilterUrl.query(this.userModel, query, {});
-      return res;
-    } catch (error) {
-      console.log(error.message);
-    }
+    // try {
+    const res = await paginateFilterUrl.query(this.userModel, query, {});
+    if (res) throw new NotFoundException();
+    return res;
+    // } catch (error) {
+    //   console.log(error.message, 'nije nadjeno');
+    // }
   }
   async getById(id: number): Promise<User> {
     try {
@@ -34,14 +42,11 @@ export class UserService {
   }
 
   async create(dto: CreateUserDto) {
-    try {
-      const user = await this.userModel.create(dto);
-      const role = await this.roleService.getRoleByName('user');
-      await user.$set('roles', [role.id]);
-      return user;
-    } catch (error) {
-      console.log(error.message);
-    }
+    // try {
+    const user = await this.userModel.create(dto);
+    const role = await this.roleService.getRoleByName('user');
+    await user.$set('roles', [role.id]);
+    return user;
   }
 
   async update(id: number, data: UpdateUserDto) {
@@ -54,11 +59,16 @@ export class UserService {
   }
 
   async getUserByEmail(email: string) {
-    const user = await this.userModel.findOne({
-      where: { email },
-      include: { all: true },
-    });
-    return user;
+    try {
+      const user = await this.userModel.findOne({
+        where: { email },
+        include: { all: true },
+      });
+
+      return user;
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   async delete(id: number) {

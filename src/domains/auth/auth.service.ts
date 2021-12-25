@@ -51,6 +51,7 @@ export class AuthService {
   }
   async validateUser(userDto: CreateUserDto): Promise<any> {
     const user = await this.userService.getUserByEmail(userDto.email);
+
     if (!user) {
       throw new HttpException(
         `The user with this email is not exist!`,

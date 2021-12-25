@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
 import { UserModule } from './domains/user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { RoleModule } from './domains/role/role.module';
@@ -9,6 +8,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { DatabaseModule } from './providers/database/database.module';
 import { join } from 'path';
 import * as dotenv from 'dotenv';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpErrorFilter } from './common/excerptions/http-error.filter';
 //import { modelsArr } from './exported-models';
 dotenv.config();
 
@@ -30,6 +31,11 @@ dotenv.config();
     ImageModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpErrorFilter,
+    },
+  ],
 })
 export class AppModule {}
