@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  BelongsTo,
   BelongsToMany,
   Column,
   DataType,
@@ -48,4 +49,10 @@ export class UserRoles extends Model<UserRoles, UserRoleAttributes> {
     allowNull: false,
   })
   roleId: string;
+
+  @BelongsTo(() => User)
+  user: User;
+
+  @BelongsTo(() => Role)
+  role: Role;
 }

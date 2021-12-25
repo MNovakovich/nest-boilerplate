@@ -9,6 +9,7 @@ console.log(process.env.NODE_ENV);
 async function bootstrap() {
   const PORT = process.env.PORT || 5000;
   const app = await NestFactory.create(AppModule);
+
   app.useGlobalPipes(new ValidationPipe());
   //setup swagger
   const config = new DocumentBuilder()
@@ -21,6 +22,7 @@ async function bootstrap() {
   SwaggerModule.setup('/api/docs', app, document);
 
   app.setGlobalPrefix('/api/v1');
+
   await app.listen(PORT, () => console.log(`Server started on port=${PORT}`));
 }
 bootstrap();

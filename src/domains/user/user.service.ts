@@ -1,32 +1,22 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { QueryTypes } from 'sequelize';
-import { Sequelize } from 'sequelize';
-import { Role } from '../role/role.model';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-//import { Sequelize } from 'sequelize-typescript';
 import { User } from './user.model';
-import { PaginateDecorator, IPaginationResponse } from 'src/common/pagination';
-import { RoleService } from '../role/role.service';
 
+import { RoleService } from '../role/role.service';
+import { paginateFilterUrl } from 'src/core/filter.pagination.decorator';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User)
-    private userModel: typeof User,
-    private roleService: RoleService,
+    @Inject('USER_REPOSITORY')
+    private readonly userModel: typeof User,
+    private roleService: RoleService, // private roleService: RoleService,
   ) {}
 
   async findAll(query): Promise<User[]> {
     try {
-      // const userNew = await new PaginateDecorator<User>({
-      //   model: this.userModel,
-      //   options: { limit: Number(query.limit) },
-      //   query: { order: [['email', 'ASC']] },
-      // });
-      // return userNew.getResult(query.page);
-      return await this.userModel.findAll({});
+      const res = await paginateFilterUrl.query(this.userModel, query, {});
+      return res;
     } catch (error) {
       console.log(error.message);
     }
@@ -43,13 +33,6 @@ export class UserService {
     }
   }
 
-  // async create(body: CreateUserDto) {
-  //   const user = await this.getUserByEmail(body.email);
-  //   if (user) {
-  //     throw new HttpException('User is alredy exists', HttpStatus.BAD_REQUEST);
-  //   }
-  //   return await this.userModel.create(body);
-  // }
   async create(dto: CreateUserDto) {
     try {
       const user = await this.userModel.create(dto);
@@ -65,7 +48,9 @@ export class UserService {
     const user = await this.userModel.findOne({ where: { id: id } });
     if (!user)
       return new HttpException('user not exist!', HttpStatus.BAD_REQUEST);
-    return await user.update(data);
+    await user.update(data);
+    await user.save();
+    return user;
   }
 
   async getUserByEmail(email: string) {
@@ -88,9 +73,13 @@ export class UserService {
   }
 
   async changeRole(data) {
-    console.log(data);
     const user = await this.userModel.findOne({ where: { id: data.userId } });
     await user.$set('roles', data.roleId);
     return user;
+  }
+  async getImagePath() {
+    console.log(this.userModel);
+    const path = `/images/`;
+    return path;
   }
 }
