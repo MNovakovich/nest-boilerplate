@@ -130,8 +130,7 @@ export class PaginateFilterUrl {
       includes = [...includes, ...options.include];
     }
     // console.log(inc, 'iiiiii');
-    console.log(includes, 'includess 1');
-    console.log(this.getAttributes(query.fields), 'attttt');
+
     dbModel = await Model.findAndCountAll({
       offset,
       limit,

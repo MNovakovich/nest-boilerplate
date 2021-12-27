@@ -1,7 +1,9 @@
 # compiled output
 /dist
 /node_modules
-
+.env
+.development.env
+/src/database/config.ts
 # Logs
 logs
 *.log

@@ -2,13 +2,16 @@ import {
   BelongsToMany,
   Column,
   DataType,
+  Length,
   Model,
   Table,
 } from 'sequelize-typescript';
+
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../role/role.model';
 import { UserRoles } from '../role/user-role.model';
 import { UPLOAD_AVATAR_FOLDER } from './user.constants';
+
 interface UserCreationAttrs {
   email: string;
   password: string;
@@ -22,6 +25,10 @@ interface UserCreationAttrs {
   deletedAt: 'deletedAt',
 })
 export class User extends Model<User, UserCreationAttrs> {
+  // static afterValidateHook(instance, options, error) {
+  //   throw new HttpException(error.message, 400);
+  // }
+
   @ApiProperty({ example: '1', description: 'unique key' })
   @Column({
     type: DataType.INTEGER,
@@ -32,6 +39,7 @@ export class User extends Model<User, UserCreationAttrs> {
   id: number;
 
   @ApiProperty({ example: 'example@gmail.com', description: 'email' })
+  @Length({ min: 3, max: 5 })
   @Column({
     type: DataType.STRING,
     unique: true,
