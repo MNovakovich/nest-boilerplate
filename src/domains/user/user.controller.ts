@@ -20,7 +20,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Roles } from '../auth/roles-auth.decorator';
+//import { Roles } from '../auth/roles-auth.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -34,7 +34,7 @@ import { UPLOAD_AVATAR_FOLDER } from './user.constants';
 export class UserController {
   constructor(private userService: UserService, imageService: ImageService) {}
 
-  @Roles('admin')
+  //@Roles('admin')
   @UseGuards(RolesGuard)
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 2000, type: [User] })
@@ -92,8 +92,8 @@ export class UserController {
     return this.userService.delete(id);
   }
 
-  @Get('/change-role/user/:userId/role/:roleId')
-  changeUserRole(@Param() params: { roleId: string; userId: string }) {
-    return this.userService.changeRole(params);
-  }
+  // @Get('/change-role/user/:userId/role/:roleId')
+  // changeUserRole(@Param() params: { roleId: string; userId: string }) {
+  //   return this.userService.changeRole(params);
+  // }
 }

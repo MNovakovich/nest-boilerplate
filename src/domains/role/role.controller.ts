@@ -8,8 +8,8 @@ export class RoleController {
   getAll() {
     return this.roleService.getAll();
   }
-  @Get('/users')
-  getAllUserRoles(@Query() query) {
-    return this.roleService.getAllRoles(query);
-  }
+  // @Get('/users')
+  // getAllUserRoles(@Query() query) {
+  //   return this.roleService.getAllRoles(query);
+  // }
 }

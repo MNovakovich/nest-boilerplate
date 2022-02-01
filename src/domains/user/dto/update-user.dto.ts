@@ -15,4 +15,7 @@ export class UpdateUserDto {
 
   @IsOptional()
   deletedAt?: string | null;
+
+  @IsOptional()
+  user_id?: number;
 }

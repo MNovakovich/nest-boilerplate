@@ -40,8 +40,8 @@ export class UserService {
   async create(dto: CreateUserDto) {
     // try {
     const user = await this.userModel.create(dto);
-    const role = await this.roleService.getRoleByName('user');
-    await user.$set('roles', [role.id]);
+    // const role = await this.roleService.getRoleByName('user');
+    //await user.$set('roles', [role.id]);
     return user;
   }
 
@@ -80,7 +80,7 @@ export class UserService {
 
   async changeRole(data) {
     const user = await this.userModel.findOne({ where: { id: data.userId } });
-    await user.$set('roles', data.roleId);
+    //   await user.$set('roles', data.roleId);
     return user;
   }
   async getImagePath() {

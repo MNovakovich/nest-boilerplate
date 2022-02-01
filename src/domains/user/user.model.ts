@@ -1,4 +1,5 @@
 import {
+  BelongsTo,
   BelongsToMany,
   Column,
   DataType,
@@ -9,7 +10,7 @@ import {
 
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../role/role.model';
-import { UserRoles } from '../role/user-role.model';
+//UserRolesimport { UserRoles } from '../role/user-role.model';
 import { UPLOAD_AVATAR_FOLDER } from './user.constants';
 
 interface UserCreationAttrs {
@@ -67,6 +68,13 @@ export class User extends Model<User, UserCreationAttrs> {
   })
   avatar: string;
 
-  @BelongsToMany(() => Role, () => UserRoles)
-  roles: Role[];
+  @ApiProperty({ example: '1', description: 'Role Id' })
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  role_id: number;
+
+  // @BelongsTo(() => Role)
+  // role: Role;
 }
