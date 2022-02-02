@@ -18,7 +18,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiTags, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles-auth.decorator';
 import { RolesGuard } from '../auth/roles.guard';
@@ -34,12 +34,28 @@ import { UPLOAD_AVATAR_FOLDER } from './user.constants';
 export class UserController {
   constructor(private userService: UserService, imageService: ImageService) {}
 
-  @Roles('user')
-  @UseGuards(RolesGuard)
+  // @Roles('user')
+  // @UseGuards(RolesGuard)
+  @ApiQuery({
+    name: 'include',
+    type: 'string',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: 'number',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'page',
+    type: 'number',
+    required: false,
+  })
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 2000, type: [User] })
   @Get('/')
   getAll(@Query() query: any) {
+    console.log(query);
     return this.userService.findAll(query);
   }
   @Post('/:id/upload')
