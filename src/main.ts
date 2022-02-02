@@ -18,10 +18,9 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('Food book')
     .build();
+  app.setGlobalPrefix('/api/v1');
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);
-
-  app.setGlobalPrefix('/api/v1');
 
   await app.listen(PORT, () => console.log(`Server started on port=${PORT}`));
 }

@@ -7,6 +7,7 @@ export function up(queryInterface) {
     {
       email: 'marko.novakovic@mail.ru',
       password: hashSync(password, 10),
+      role_id: 1,
       created_at: new Date(),
       updated_at: new Date(),
     },
@@ -15,6 +16,7 @@ export function up(queryInterface) {
     data.push({
       email: internet.email(),
       password: hashSync(password, 10),
+      role_id: 2,
       created_at: new Date(),
       updated_at: new Date(),
     });

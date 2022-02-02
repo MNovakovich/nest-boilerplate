@@ -47,6 +47,6 @@ export class Role extends Model<Role, RoleAttributes> {
   })
   description: string;
 
-  // @HasMany(() => User)
-  // users: User[];
+  @HasMany(() => User)
+  users: User[];
 }

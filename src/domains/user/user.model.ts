@@ -3,6 +3,7 @@ import {
   BelongsToMany,
   Column,
   DataType,
+  ForeignKey,
   Length,
   Model,
   Table,
@@ -69,12 +70,13 @@ export class User extends Model<User, UserCreationAttrs> {
   avatar: string;
 
   @ApiProperty({ example: '1', description: 'Role Id' })
+  @ForeignKey(() => Role)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
   role_id: number;
 
-  // @BelongsTo(() => Role)
-  // role: Role;
+  @BelongsTo(() => Role)
+  role: Role;
 }

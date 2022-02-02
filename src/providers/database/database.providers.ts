@@ -12,7 +12,8 @@ export const databaseProviders = [
 
       paginateFilterUrl.setModels(sequelize.models);
       //console.log(paginationInit.isModelExists('Role'));
-      await sequelize.sync({ force: true });
+      //await sequelize.sync({ force: true });
+      await sequelize.sync();
       return sequelize;
     },
   },

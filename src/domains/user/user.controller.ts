@@ -20,7 +20,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-//import { Roles } from '../auth/roles-auth.decorator';
+import { Roles } from '../auth/roles-auth.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -34,14 +34,12 @@ import { UPLOAD_AVATAR_FOLDER } from './user.constants';
 export class UserController {
   constructor(private userService: UserService, imageService: ImageService) {}
 
-  //@Roles('admin')
+  @Roles('user')
   @UseGuards(RolesGuard)
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 2000, type: [User] })
   @Get('/')
   getAll(@Query() query: any) {
-    // const query = { page: 1 };
-    console.log(query);
     return this.userService.findAll(query);
   }
   @Post('/:id/upload')
@@ -65,7 +63,7 @@ export class UserController {
     return res.status(200).json(user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard)
   @ApiOperation({ summary: 'Get userBy Id' })
   @ApiResponse({ status: 2000, type: User })
   @Get('/:id')

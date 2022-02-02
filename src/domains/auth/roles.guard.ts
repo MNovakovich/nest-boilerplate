@@ -39,11 +39,7 @@ export class RolesGuard implements CanActivate {
 
       req.user = decodedUser;
       const user = await this.userService.getById(decodedUser.id);
-
-      // first approach
-      //return user.roles.some((role) => requiredRoles.includes(role.name));
-      // second approach
-      // return data.roles.some(role => requiredRoles.includes(role.value));
+      return requiredRoles.includes(user.role.name);
     } catch (error) {
       console.log(error.message);
       throw new HttpException('Unauthorized user!', HttpStatus.FORBIDDEN);

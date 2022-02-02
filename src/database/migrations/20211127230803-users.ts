@@ -21,6 +21,11 @@ module.exports = {
         type: Sequelize.STRING(562),
         allowNull: true,
       },
+      role_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        default: 2,
+      },
       createdAt: {
         type: Sequelize.DATE,
         field: 'created_at',
