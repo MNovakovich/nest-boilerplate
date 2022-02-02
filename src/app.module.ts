@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './domains/user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { RoleModule } from './domains/role/role.module';
-import { AuthModule } from './domains/auth/auth.module';
-import { ImageModule } from './services/images/image.module';
+
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { DatabaseModule } from './providers/database/database.module';
 import { join } from 'path';
@@ -24,11 +21,6 @@ dotenv.config();
       isGlobal: true,
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
-
-    UserModule,
-    RoleModule,
-    AuthModule,
-    ImageModule,
   ],
   controllers: [],
   providers: [
