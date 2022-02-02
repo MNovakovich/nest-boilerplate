@@ -11,7 +11,6 @@ import {
 
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../role/role.model';
-//UserRolesimport { UserRoles } from '../role/user-role.model';
 import { UPLOAD_AVATAR_FOLDER } from './user.constants';
 
 interface UserCreationAttrs {

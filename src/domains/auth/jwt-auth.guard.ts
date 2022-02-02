@@ -22,7 +22,6 @@ export class JwtAuthGuard implements CanActivate {
 
       req.user = user;
       return true;
-      //  return user.roles.some(role => requiredRoles.includes(role.value));
     } catch (error) {
       console.log(error.message);
       throw new UnauthorizedException({ message: 'Unauthorized user!' });

@@ -63,7 +63,7 @@ export class UserController {
     return res.status(200).json(user);
   }
 
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get userBy Id' })
   @ApiResponse({ status: 2000, type: User })
   @Get('/:id')
@@ -89,9 +89,4 @@ export class UserController {
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.userService.delete(id);
   }
-
-  // @Get('/change-role/user/:userId/role/:roleId')
-  // changeUserRole(@Param() params: { roleId: string; userId: string }) {
-  //   return this.userService.changeRole(params);
-  // }
 }
