@@ -7,6 +7,7 @@ import { join } from 'path';
 import * as dotenv from 'dotenv';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpErrorFilter } from './common/excerptions/http-error.filter';
+import { exportedModules } from './exported-models';
 //import { modelsArr } from './exported-models';
 dotenv.config();
 
@@ -21,6 +22,7 @@ dotenv.config();
       isGlobal: true,
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
+    ...exportedModules,
   ],
   controllers: [],
   providers: [
