@@ -25,6 +25,7 @@ export class Valuetype
   @Column({
     field: 'ID',
     primaryKey: true,
+    autoIncrement: true,
     type: DataType.INTEGER,
     comment: 'Surogate key - autoincerment number',
   })

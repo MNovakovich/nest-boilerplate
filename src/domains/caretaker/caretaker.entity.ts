@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { CaretakerType } from '../caretaker_type/caretaker_type.entity';
 
 interface CaretakerAttributes {
   id: number;
@@ -32,10 +34,11 @@ export class Caretaker
     field: 'ID',
     primaryKey: true,
     type: DataType.INTEGER,
+    autoIncrement: true,
     comment: 'Surogate key - autoincerment number',
   })
   id!: number;
-
+  @ForeignKey(() => CaretakerType)
   @Column({
     field: 'CARETAKER_TYPE_ID',
     allowNull: true,
@@ -88,4 +91,7 @@ export class Caretaker
     comment: 'Caretaker phone number',
   })
   phone!: string;
+
+  @BelongsTo(() => CaretakerType)
+  caretakerType: CaretakerType;
 }

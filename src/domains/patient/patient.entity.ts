@@ -29,6 +29,7 @@ export class Patient
     field: 'ID',
     primaryKey: true,
     type: DataType.INTEGER,
+    autoIncrement: true,
     comment: 'Surogate key - autoincerment number',
   })
   id!: number;
