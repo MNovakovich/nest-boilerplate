@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Inject, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Inject,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { PaginateDecorator, IPaginationResponse } from 'src/common/pagination';
 import { CreateUsersRoleDto } from './dto/create-users_role.dto';
@@ -9,14 +15,21 @@ import { paginateFilterUrl } from 'src/core/filter.pagination.decorator';
 @Injectable()
 export class UsersRoleService {
   //constructor(@InjectModel(UsersRole) private users_roleRepository: typeof UsersRole) {}
-  constructor(@Inject('USERS_ROLE_REPOSITORY') private users_roleRepository: typeof UsersRole) {}
+  constructor(
+    @Inject('USERS_ROLE_REPOSITORY')
+    private users_roleRepository: typeof UsersRole,
+  ) {}
   async create(data: CreateUsersRoleDto | any) {
     const result = await this.users_roleRepository.create(data);
     return result;
   }
 
-  async findAll(query:any): Promise<UsersRole[]> {
-    const res = await paginateFilterUrl.query(this.users_roleRepository, query, {});
+  async findAll(query: any): Promise<UsersRole[]> {
+    const res = await paginateFilterUrl.query(
+      this.users_roleRepository,
+      query,
+      {},
+    );
     if (!res) throw new NotFoundException();
     return res;
   }
@@ -34,6 +47,6 @@ export class UsersRoleService {
   }
 
   remove(id: number) {
-    return this.users_roleRepository.destroy({ where: { id }});
+    return this.users_roleRepository.destroy({ where: { id } });
   }
 }

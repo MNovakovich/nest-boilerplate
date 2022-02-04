@@ -16,7 +16,9 @@ import { ApiQuery, ApiTags } from '@nestjs/swagger';
 @ApiTags('diagnosis_indicator')
 @Controller('diagnosis_indicator')
 export class DiagnosisIndicatorController {
-  constructor(private readonly diagnosis_indicatorService: DiagnosisIndicatorService) {}
+  constructor(
+    private readonly diagnosis_indicatorService: DiagnosisIndicatorService,
+  ) {}
 
   @Post()
   create(@Body() body: CreateDiagnosisIndicatorDto) {

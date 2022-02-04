@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Inject, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Inject,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { PaginateDecorator, IPaginationResponse } from 'src/common/pagination';
 import { CreateTakeCareDto } from './dto/create-take_care.dto';
@@ -9,14 +15,21 @@ import { paginateFilterUrl } from 'src/core/filter.pagination.decorator';
 @Injectable()
 export class TakeCareService {
   //constructor(@InjectModel(TakeCare) private take_careRepository: typeof TakeCare) {}
-  constructor(@Inject('TAKE_CARE_REPOSITORY') private take_careRepository: typeof TakeCare) {}
+  constructor(
+    @Inject('TAKE_CARE_REPOSITORY')
+    private take_careRepository: typeof TakeCare,
+  ) {}
   async create(data: CreateTakeCareDto | any) {
     const result = await this.take_careRepository.create(data);
     return result;
   }
 
-  async findAll(query:any): Promise<TakeCare[]> {
-    const res = await paginateFilterUrl.query(this.take_careRepository, query, {});
+  async findAll(query: any): Promise<TakeCare[]> {
+    const res = await paginateFilterUrl.query(
+      this.take_careRepository,
+      query,
+      {},
+    );
     if (!res) throw new NotFoundException();
     return res;
   }
@@ -34,6 +47,6 @@ export class TakeCareService {
   }
 
   remove(id: number) {
-    return this.take_careRepository.destroy({ where: { id }});
+    return this.take_careRepository.destroy({ where: { id } });
   }
 }

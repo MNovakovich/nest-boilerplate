@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Inject, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Inject,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { PaginateDecorator, IPaginationResponse } from 'src/common/pagination';
 import { CreatePatientDto } from './dto/create-patient.dto';
@@ -9,14 +15,20 @@ import { paginateFilterUrl } from 'src/core/filter.pagination.decorator';
 @Injectable()
 export class PatientService {
   //constructor(@InjectModel(Patient) private patientRepository: typeof Patient) {}
-  constructor(@Inject('PATIENT_REPOSITORY') private patientRepository: typeof Patient) {}
+  constructor(
+    @Inject('PATIENT_REPOSITORY') private patientRepository: typeof Patient,
+  ) {}
   async create(data: CreatePatientDto | any) {
     const result = await this.patientRepository.create(data);
     return result;
   }
 
-  async findAll(query:any): Promise<Patient[]> {
-    const res = await paginateFilterUrl.query(this.patientRepository, query, {});
+  async findAll(query: any): Promise<Patient[]> {
+    const res = await paginateFilterUrl.query(
+      this.patientRepository,
+      query,
+      {},
+    );
     if (!res) throw new NotFoundException();
     return res;
   }
@@ -34,6 +46,6 @@ export class PatientService {
   }
 
   remove(id: number) {
-    return this.patientRepository.destroy({ where: { id }});
+    return this.patientRepository.destroy({ where: { id } });
   }
 }

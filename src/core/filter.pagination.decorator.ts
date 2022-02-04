@@ -96,11 +96,11 @@ export class PaginateFilterUrl {
       query.page || 1 ? (query.limit ? Number(query.limit) : 15) : null;
     const offset = query.page ? 0 + (query.page - 1) * limit : null;
 
-    let order: any[] = [];
+    const order: any[] = [];
     if (query.orderBy) {
       const direction = query.direction ? query.direction : 'ASC'; //DESC & ASC
       if (query.orderBy.includes('.')) {
-        let [orderedModel, orderedColumn] = query.orderBy.split('.');
+        const [orderedModel, orderedColumn] = query.orderBy.split('.');
         const fk = orderedModel.toLowerCase() + '_id';
         order.push([
           {
@@ -115,11 +115,11 @@ export class PaginateFilterUrl {
       }
     }
 
-    let filters = this.filterQuery(query);
+    const filters = this.filterQuery(query);
 
     let dbModel;
 
-    let where = { ...filters };
+    const where = { ...filters };
 
     let includes: any = this.includes(query.include)
       ? this.includes(query.include)
@@ -160,7 +160,7 @@ export class PaginateFilterUrl {
         /filter/.test(key) &&
         typeof query[key] !== 'undefined'
       ) {
-        let tableName = key.slice(7);
+        const tableName = key.slice(7);
         keys[tableName] = { [Op.like]: `${query[key]}%` };
       }
       if (
@@ -168,7 +168,7 @@ export class PaginateFilterUrl {
         /where/.test(key) &&
         typeof query[key] !== 'undefined'
       ) {
-        let tableName = key.slice(6);
+        const tableName = key.slice(6);
         keys[tableName] = { [Op.like]: `${query[key]}` };
       }
     }
@@ -179,7 +179,7 @@ export class PaginateFilterUrl {
   getAttributes(attributes) {
     if (!attributes) return null;
     if (attributes.includes(',')) {
-      let splitedAttr = attributes.split(',');
+      const splitedAttr = attributes.split(',');
       return splitedAttr;
     }
 
@@ -201,7 +201,7 @@ export class PaginateFilterUrl {
       const data = [];
       includes.forEach((item) => {
         if (item.includes(';')) {
-          let properties = item.split(';');
+          const properties = item.split(';');
 
           const [model, ...otherProps] = properties;
           if (this.isModelExists(model)) data.push(this.splitIncludes(item));
@@ -219,7 +219,7 @@ export class PaginateFilterUrl {
   };
 
   splitIncludes(include) {
-    let properties = include.split(';');
+    const properties = include.split(';');
 
     const [model, ...otherProps] = properties;
 

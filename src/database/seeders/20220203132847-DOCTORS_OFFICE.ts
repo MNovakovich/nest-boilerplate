@@ -7,12 +7,12 @@ export function up(queryInterface) {
     {
       ADDRESS: 'Bulevar Evrope 3, Novi Sad',
       NAME: 'Pedijatrija',
-      PHONE: '063 521216'
+      PHONE: '063 521216',
     },
     {
       ADDRESS: 'Radnicka 5',
       NAME: 'Estetska hirurgija',
-      PHONE: '555-333'
+      PHONE: '555-333',
     },
   ];
 
