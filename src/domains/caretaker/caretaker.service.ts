@@ -10,7 +10,7 @@ import { PaginateDecorator, IPaginationResponse } from 'src/common/pagination';
 import { CreateCaretakerDto } from './dto/create-caretaker.dto';
 import { UpdateCaretakerDto } from './dto/update-caretaker.dto';
 import { Caretaker } from './caretaker.entity';
-import { paginateFilterUrl } from 'src/core/filter.pagination.decorator';
+import { paginateFilterUrl } from '../../core/filter.pagination.decorator';
 
 @Injectable()
 export class CaretakerService {

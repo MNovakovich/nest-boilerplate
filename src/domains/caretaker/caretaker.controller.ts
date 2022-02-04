@@ -18,6 +18,11 @@ import { ApiQuery, ApiTags } from '@nestjs/swagger';
 export class CaretakerController {
   constructor(private readonly caretakerService: CaretakerService) {}
 
+  @Get('/test-app')
+  testApp() {
+    return 'novi test';
+  }
+
   @Post()
   create(@Body() body: CreateCaretakerDto) {
     return this.caretakerService.create(body);
