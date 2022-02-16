@@ -1,5 +1,3 @@
-import { Sequelize } from 'sequelize-typescript';
-
 import sequelize from '../../config/database/sequelize';
 import { paginateFilterUrl } from 'src/core/filter.pagination.decorator';
 import { exportedEntities } from 'src/exported-models';

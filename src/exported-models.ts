@@ -18,8 +18,8 @@ import { MedicalIndicatorModule } from './domains/medical_indicator/medical_indi
 import { MedicalIndicator } from './domains/medical_indicator/medical_indicator.entity';
 import { MedicalTreatmentModule } from './domains/medical_treatment/medical_treatment.module';
 import { MedicalTreatment } from './domains/medical_treatment/medical_treatment.entity';
-import { OfficeUserModule } from './domains/office_user/office_user.module';
-import { OfficeUser } from './domains/office_user/office_user.entity';
+import { UserModule } from './domains/user/user.module';
+import { User } from './domains/user/user.entity';
 import { PatientModule } from './domains/patient/patient.module';
 import { Patient } from './domains/patient/patient.entity';
 import { TakeCareModule } from './domains/take_care/take_care.module';
@@ -46,7 +46,7 @@ export const exportedModules = [
   IntervalScoreModule,
   MedicalIndicatorModule,
   MedicalTreatmentModule,
-  OfficeUserModule,
+  UserModule,
   PatientModule,
   TakeCareModule,
   TakecareNoteModule,
@@ -67,7 +67,7 @@ export const exportedEntities = [
   IntervalScore,
   MedicalIndicator,
   MedicalTreatment,
-  OfficeUser,
+  User,
   Patient,
   TakeCare,
   TakecareNote,

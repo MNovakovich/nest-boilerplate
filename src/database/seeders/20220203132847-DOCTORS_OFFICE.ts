@@ -1,8 +1,6 @@
 'use strict';
-import { hashSync } from 'bcrypt';
-import { internet } from 'faker';
+
 export function up(queryInterface) {
-  const password = '1111111';
   const data = [
     {
       ADDRESS: 'Bulevar Evrope 3, Novi Sad',

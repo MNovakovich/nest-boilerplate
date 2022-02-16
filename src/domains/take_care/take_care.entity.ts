@@ -3,10 +3,10 @@ import {
   Table,
   Column,
   DataType,
-  Index,
-  Sequelize,
   ForeignKey,
 } from 'sequelize-typescript';
+import { Caretaker } from '../caretaker/caretaker.entity';
+import { Patient } from '../patient/patient.entity';
 
 interface TakeCareAttributes {
   id: number;
@@ -20,6 +20,7 @@ interface TakeCareAttributes {
 @Table({
   tableName: 'TAKE_CARE',
   timestamps: false,
+
   comment: 'A relation who takeing care about patient.',
 })
 export class TakeCare
@@ -29,24 +30,29 @@ export class TakeCare
   @Column({
     field: 'ID',
     primaryKey: true,
+    autoIncrement: true,
     type: DataType.INTEGER,
     comment: 'Surogate key, autoincrement',
   })
   id!: number;
 
+  @ForeignKey(() => Caretaker)
   @Column({
     field: 'CARETAKER_ID',
     type: DataType.INTEGER,
     comment: 'FK reference for person who take care for patient',
+    allowNull: false,
   })
-  caretakerId!: number;
+  caretakerId: number;
 
+  @ForeignKey(() => Patient)
   @Column({
     field: 'PATIENT_ID',
     type: DataType.INTEGER,
     comment: 'FK reference for person who is a patient of the doctor',
+    allowNull: false,
   })
-  patientId!: number;
+  patientId: number;
 
   @Column({
     field: 'ACTIVATED_TIME',

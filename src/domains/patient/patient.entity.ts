@@ -1,11 +1,11 @@
+import { Caretaker } from '../caretaker/caretaker.entity';
+import { TakeCare } from '../take_care/take_care.entity';
 import {
   Model,
   Table,
   Column,
   DataType,
-  Index,
-  Sequelize,
-  ForeignKey,
+  BelongsToMany,
 } from 'sequelize-typescript';
 
 interface PatientAttributes {
@@ -95,4 +95,7 @@ export class Patient
       'Time when mobile application register familly on application backend.',
   })
   activaionTime?: Date;
+
+  @BelongsToMany(() => Caretaker, () => TakeCare)
+  caretakers: Caretaker[];
 }

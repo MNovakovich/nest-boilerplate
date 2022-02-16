@@ -3,17 +3,19 @@ import {
   Table,
   Column,
   DataType,
-  Index,
-  Sequelize,
+  HasOne,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
+import { Caretaker } from '../caretaker/caretaker.entity';
+import { DoctorsOffice } from '../doctors_office/doctors_office.entity';
 
 interface OfficeUserAttributes {
   id: number;
   doctorsOfficeId: number;
   userRoleId?: number;
   userName: string;
-  userPassword: string;
+  password: string;
   firstName: string;
   lastName: string;
   phone?: string;
@@ -21,18 +23,19 @@ interface OfficeUserAttributes {
 }
 
 @Table({ tableName: 'OFFICE_USER', timestamps: false })
-export class OfficeUser
+export class User
   extends Model<OfficeUserAttributes, OfficeUserAttributes>
   implements OfficeUserAttributes
 {
   @Column({
     field: 'ID',
     primaryKey: true,
+    autoIncrement: true,
     type: DataType.INTEGER,
     comment: 'Surogate key - autoincerment number',
   })
   id!: number;
-
+  @ForeignKey(() => DoctorsOffice)
   @Column({
     field: 'DOCTORS_OFFICE_ID',
     type: DataType.INTEGER,
@@ -57,11 +60,11 @@ export class OfficeUser
   userName!: string;
 
   @Column({
-    field: 'USER_PASSWORD',
-    type: DataType.STRING(40),
+    field: 'PASSWORD',
+    type: DataType.STRING(256),
     comment: "Users' password / hash value",
   })
-  userPassword!: string;
+  password!: string;
 
   @Column({
     field: 'FIRST_NAME',
@@ -94,4 +97,7 @@ export class OfficeUser
       'Official (business) email of the user - usable for parent communication ',
   })
   email?: string;
+
+  @HasMany(() => Caretaker)
+  caretaker: Caretaker;
 }

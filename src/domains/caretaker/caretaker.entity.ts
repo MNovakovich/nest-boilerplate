@@ -3,22 +3,22 @@ import {
   Table,
   Column,
   DataType,
-  Index,
-  Sequelize,
   ForeignKey,
   BelongsTo,
+  BelongsToMany,
+  HasOne,
 } from 'sequelize-typescript';
 import { CaretakerType } from '../caretaker_type/caretaker_type.entity';
+import { Patient } from '../patient/patient.entity';
+import { TakeCare } from '../take_care/take_care.entity';
+import { User } from '../user/user.entity';
 
 interface CaretakerAttributes {
   id: number;
   caretakerTypeId?: number;
-  email?: string;
-  password?: string;
-  firstName: string;
-  lastName: string;
   address?: string;
   phone: string;
+  userId: number;
 }
 
 @Table({
@@ -38,44 +38,26 @@ export class Caretaker
     comment: 'Surogate key - autoincerment number',
   })
   id!: number;
+
   @ForeignKey(() => CaretakerType)
   @Column({
     field: 'CARETAKER_TYPE_ID',
-    allowNull: true,
+    allowNull: false,
     type: DataType.INTEGER,
     comment: 'FK, Surogate key of caretaker type',
   })
   caretakerTypeId?: number;
 
+  @ForeignKey(() => User)
   @Column({
-    field: 'EMAIL',
-    allowNull: true,
-    type: DataType.STRING(60),
-    comment: 'Caretaker email address, also as user name for caretaker',
+    field: 'USER_ID',
+    allowNull: false,
+    type: DataType.INTEGER,
   })
-  email?: string;
+  userId: number;
 
-  @Column({
-    field: 'PASSWORD',
-    allowNull: true,
-    type: DataType.STRING(40),
-    comment: 'Caretarker access password',
-  })
-  password?: string;
-
-  @Column({
-    field: 'FIRST_NAME',
-    type: DataType.STRING(40),
-    comment: 'First Name of the parent',
-  })
-  firstName!: string;
-
-  @Column({
-    field: 'LAST_NAME',
-    type: DataType.STRING(40),
-    comment: 'Last Name of the parent',
-  })
-  lastName!: string;
+  @BelongsTo(() => User)
+  user: User;
 
   @Column({
     field: 'ADDRESS',
@@ -94,4 +76,7 @@ export class Caretaker
 
   @BelongsTo(() => CaretakerType)
   caretakerType: CaretakerType;
+
+  @BelongsToMany(() => Patient, () => TakeCare)
+  patients: Patient[];
 }

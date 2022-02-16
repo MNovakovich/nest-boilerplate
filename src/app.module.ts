@@ -9,6 +9,8 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpErrorFilter } from './common/excerptions/http-error.filter';
 import { exportedModules } from './exported-models';
 //import { modelsArr } from './exported-models';
+import { AuthModule } from './domains/auth/auth.module';
+
 dotenv.config();
 
 @Module({
@@ -23,6 +25,7 @@ dotenv.config();
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     ...exportedModules,
+    AuthModule,
   ],
   controllers: [],
   providers: [

@@ -5,8 +5,7 @@ import {
   Inject,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { PaginateDecorator, IPaginationResponse } from 'src/common/pagination';
+
 import { CreateUsersRoleDto } from './dto/create-users_role.dto';
 import { UpdateUsersRoleDto } from './dto/update-users_role.dto';
 import { UsersRole } from './users_role.entity';
